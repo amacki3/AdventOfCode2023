@@ -1,6 +1,6 @@
 import os 
 import re
-from bisect import bisect_left
+from bisect import bisect
 import numpy as np
 
 class router:
@@ -34,7 +34,6 @@ def parse_input(input):
 
 
 def determine_min_location(seeds,maps):
-    minLocation = -1
     new_seeds = np.array(seeds,dtype=np.int64)
     #we iterate through our routes and apply them
     #each set of routes is in order now, so we can simply find the first one
@@ -46,24 +45,22 @@ def determine_min_location(seeds,maps):
         new_seeds = np.copy(seeds)
         print("NEXT ROUTE")
         cont = True
-        seedId = np.argmax([seeds >= routes[0].source])
-        routeid = bisect_left(routes,seeds[seedId], key=lambda x: x.source) - 1
         #This finds the first routeid that is relevent
-        #Now find if that exhausts the seeds or if we need to continue
+        #Now find if that exhausts the seeds or if we need to continue 
+        routeid = bisect(routes,seeds[0], key=lambda x: x.source) - 1
         while(cont):
+
             current_route = routes[routeid]
             routeIdEnd = current_route.source + current_route.range_value
-            if routeid > -1 and routeIdEnd >= seeds[seedId]:
-                #We have found a route appropriate for this seed. We must find out how long it runs for
-                if routeIdEnd > seeds[-1]:
-                    cont = False
-                new_seeds[np.logical_and(current_route.source <= seeds, routeIdEnd > seeds)] += current_route.destination - current_route.source
+            if routeIdEnd > seeds[-1]:
+                cont = False
+            new_seeds[np.logical_and(current_route.source <= seeds, routeIdEnd > seeds)] += current_route.destination - current_route.source
             if routeid == len(routes)-1:
                 cont = False
             if cont:
-                seedId = np.argmax([seeds >= routes[routeid+1].source])
                 routeid += 1
-    return np.min(seeds)
+    
+    return np.min(new_seeds)
         
 
 def solve_part1(input):
