@@ -7,9 +7,6 @@ def base13_int(string_value):
     card_dict = {'A':0xe,'K':0xd,'Q':0xc,'J':0xb,'T':0xa,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9}
     return card_dict[string_value]
 
-def base13_int_mod(string_value):
-    card_dict = {'A':0xe,'K':0xd,'Q':0xc,'J':0,'T':0xa,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9}
-    return card_dict[string_value]
 
 def solve_part1(input):
     lines = input.readlines()
@@ -37,6 +34,11 @@ def solve_part1(input):
     bid_values = bid_values[np.argsort(rank_value)]
 
     return np.sum(np.array(bid_values) * np.arange(1,len(bid_values) +1)) 
+
+
+def base13_int_mod(string_value):
+    card_dict = {'A':0xe,'K':0xd,'Q':0xc,'J':0,'T':0xa,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9}
+    return card_dict[string_value]
 
 def solve_part2(input):
     lines = input.readlines()
